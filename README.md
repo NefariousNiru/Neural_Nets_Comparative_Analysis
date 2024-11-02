@@ -1,7 +1,7 @@
 # This project aims to model 3 datasets
 - Auto MPG
 - Seoul Bike Share Demand
--
+- Boston Housing
 
 ## The objective is to test the model on various regression techniques.
 - 2L_NN
@@ -27,11 +27,12 @@ Neural Nets Architectures
     - TwoLayerNN.py
     - ThreeLayerNN.py
     - FourLayerNN.py
+    - CustomNN.py
 
 - util (utility methods - pre_processing, loading, metrics)
 
-All NN folders contain `neural_networks.py` which is the entry point for the application,
-except random forest regression and feature selection which can be run using `seoul_bike.py`, `auto_mpg.py`
+All NN folders contain `cross_val`, `train_test` and `in_sample` which is the entry point for the application for different validation techinques,
+except random forest regression `auto_mpg.py`, `boston.py`, `seoul_bike.py` and feature selection using `run.py` respectively.
 
 # All dependencies are listed `requirements.txt` - Install package dependencies using
 `pip install -r requirements.txt`
