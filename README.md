@@ -31,7 +31,7 @@ Neural Nets Architectures
 
 - util (utility methods - pre_processing, loading, metrics)
 
-All NN folders contain `cross_val`, `train_test` and `in_sample` which is the entry point for the application for different validation techinques,
+All NN folders contain `cross_val.py`, `train_test.py` and `in_sample.py` which are the entry point for the application for different validation techinques,
 except random forest regression `auto_mpg.py`, `boston.py`, `seoul_bike.py` and feature selection using `run.py` respectively.
 
 # All dependencies are listed `requirements.txt` - Install package dependencies using
