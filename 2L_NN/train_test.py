@@ -8,6 +8,8 @@ from datasets.seoul_bike_sharing_demand import seoul_bike
 from datasets.boston import boston
 from util import load, performance_metrics, pre_processing
 from TwoLayerNN import TwoLayerNN
+from util import plot
+
 
 def run_auto_mpg_train_test():
     data = auto_mpg.get_dataset()
@@ -29,6 +31,7 @@ def run_auto_mpg_train_test():
     y_test_tensor = torch.FloatTensor(y_test.values).view(-1, 1)
 
     num_epochs = 10000
+    losses = []
     for epoch in range(num_epochs):
         model.train()
         optimizer.zero_grad()  # Zero the gradients
@@ -36,7 +39,7 @@ def run_auto_mpg_train_test():
         loss = criterion(outputs, y_train_tensor)  # Compute loss
         loss.backward()  # Backward pass
         optimizer.step()  # Update weights
-
+        losses.append(loss.item())
         if (epoch + 1) % 1000 == 0:  # Print every 10 epochs
             print(f'Epoch [{epoch + 1}/{num_epochs}], Loss: {loss.item():.4f}')
 
@@ -49,6 +52,11 @@ def run_auto_mpg_train_test():
 
     print(f'Test Loss: {test_loss.item()}')
     print(f'R2 Score: {r2_score}')
+
+    plot.plot_loss_vs_epoch(num_epochs, losses)
+    plot.plot_feature_vs_pred(X_test, y_test, y_pred, "weight", 'mpg')
+    plot.plot_feature_vs_pred(X_test, y_test, y_pred, "horsepower", 'mpg')
+
 
 
 def run_seoul_bike_share_train_test():
@@ -72,6 +80,7 @@ def run_seoul_bike_share_train_test():
     y_test_tensor = torch.FloatTensor(y_test.values).view(-1, 1)
 
     num_epochs = 10000
+    losses = []
     for epoch in range(num_epochs):
         model.train()
         optimizer.zero_grad()  # Zero the gradients
@@ -80,6 +89,7 @@ def run_seoul_bike_share_train_test():
         loss.backward()  # Backward pass
         optimizer.step()  # Update weights
 
+        losses.append(loss.item())
         if (epoch + 1) % 1000 == 0:  # Print every 10 epochs
             print(f'Epoch [{epoch + 1}/{num_epochs}], Loss: {loss.item():.4f}')
 
@@ -92,6 +102,10 @@ def run_seoul_bike_share_train_test():
 
     print(f'Test Loss: {test_loss.item()}')
     print(f'R2 Score: {r2_score}')
+
+    plot.plot_loss_vs_epoch(num_epochs, losses)
+    plot.plot_feature_vs_pred(X_test, y_test, y_pred, "Temperature(C)", 'Rented Bike Count')
+    plot.plot_feature_vs_pred(X_test, y_test, y_pred, "Hour", 'Rented Bike Count')
 
 def run_boston_train_test():
     data = boston.get_dataset()
@@ -115,6 +129,7 @@ def run_boston_train_test():
     y_test_tensor = torch.FloatTensor(y_test.values).view(-1, 1)
 
     num_epochs = 10000
+    losses = []
     for epoch in range(num_epochs):
         model.train()
         optimizer.zero_grad()  # Zero the gradients
@@ -122,7 +137,7 @@ def run_boston_train_test():
         loss = criterion(outputs, y_train_tensor)  # Compute loss
         loss.backward()  # Backward pass
         optimizer.step()  # Update weights
-
+        losses.append(loss.item())
         if (epoch + 1) % 1000 == 0:  # Print every 10 epochs
             print(f'Epoch [{epoch + 1}/{num_epochs}], Loss: {loss.item():.4f}')
 
@@ -136,7 +151,8 @@ def run_boston_train_test():
     print(f'Test Loss: {test_loss.item()}')
     print(f'R2 Score: {r2_score}')
 
-
+    plot.plot_loss_vs_epoch(num_epochs, losses)
+    plot.plot_feature_vs_pred(X_test, y_test, y_pred, "RM", 'MEDV')
 
 if __name__ == "__main__":
     # run_auto_mpg_train_test()

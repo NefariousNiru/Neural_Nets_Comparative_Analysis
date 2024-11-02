@@ -35,7 +35,7 @@ def run_auto_mpg_in_sample():
         loss.backward()
         optimizer.step()
 
-        if (epoch + 1) % 100 == 0:
+        if (epoch + 1) % 1000 == 0:
             print(f'Epoch [{epoch + 1}/{num_epochs}], Loss: {loss.item():.4f}')
 
     # In-sample evaluation
@@ -75,7 +75,7 @@ def run_seoul_bike_in_sample():
         loss.backward()
         optimizer.step()
 
-        if (epoch + 1) % 100 == 0:
+        if (epoch + 1) % 1000 == 0:
             print(f'Epoch [{epoch + 1}/{num_epochs}], Loss: {loss.item():.4f}')
 
     # In-sample evaluation
@@ -87,6 +87,8 @@ def run_seoul_bike_in_sample():
 
     print(f'In-Sample Loss: {in_sample_loss.item()}')
     print(f'R2 Score: {r2_score}')
+
+
 def run_boston_in_sample():
     data = boston.get_dataset()
 
@@ -131,5 +133,5 @@ def run_boston_in_sample():
 
 if __name__ == "__main__":
     # run_auto_mpg_in_sample()
-    # run_seoul_bike_in_sample()
-    run_boston_in_sample()
+    run_seoul_bike_in_sample()
+    # run_boston_in_sample()

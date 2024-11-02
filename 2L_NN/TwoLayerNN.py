@@ -6,9 +6,11 @@ class TwoLayerNN(nn.Module):
         super(TwoLayerNN, self).__init__()
 
         # Input and Output Layer (Fully-Connected)
-        self.layer1 = nn.Linear(input_size, 16)
-        self.activation = nn.ReLU()
-        self.layer2 = nn.Linear(16, 1)
+        self.network = nn.Sequential(
+            nn.Linear(input_size, 128),
+            nn.ReLU(),
+            nn.Linear(128, 1)
+        )
 
     def forward(self, x):
-        return self.layer2(self.activation(self.layer1(x)))
+        return self.network(x)

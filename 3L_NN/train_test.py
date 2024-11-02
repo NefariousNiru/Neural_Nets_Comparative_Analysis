@@ -8,7 +8,7 @@ from datasets.auto_mpg import auto_mpg
 from datasets.boston import boston
 from util import load, performance_metrics, pre_processing
 from datasets.seoul_bike_sharing_demand import seoul_bike
-
+from util import plot
 
 def run_auto_mpg():
     data = auto_mpg.get_dataset()
@@ -22,14 +22,15 @@ def run_auto_mpg():
     # Create an input layer with features from X as nodes
     model = ThreeLayerNN(input_size)
     criterion = nn.MSELoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.01)
+    optimizer = optim.Adam(model.parameters(), lr=0.001)
 
     X_train_tensor = torch.FloatTensor(X_train.values)
     y_train_tensor = torch.FloatTensor(y_train.values).view(-1, 1)
     X_test_tensor = torch.FloatTensor(X_test.values)
     y_test_tensor = torch.FloatTensor(y_test.values).view(-1, 1)
 
-    num_epochs = 1000
+    num_epochs = 10000
+    losses = []
     for epoch in range(num_epochs):
         model.train()
         optimizer.zero_grad()  # Zero the gradients
@@ -37,8 +38,8 @@ def run_auto_mpg():
         loss = criterion(outputs, y_train_tensor)  # Compute loss
         loss.backward()  # Backward pass
         optimizer.step()  # Update weights
-
-        if (epoch + 1) % 100 == 0:  # Print every 10 epochs
+        losses.append(loss.item())
+        if (epoch + 1) % 1000 == 0:  # Print every 10 epochs
             print(f'Epoch [{epoch + 1}/{num_epochs}], Loss: {loss.item():.4f}')
 
     # Evaluate the model
@@ -50,6 +51,10 @@ def run_auto_mpg():
 
     print(f'Test Loss: {test_loss.item()}')
     print(f'R2 Score: {r2_score}')
+
+    plot.plot_loss_vs_epoch(num_epochs, losses)
+    plot.plot_feature_vs_pred(X_test, y_test, y_pred, "weight", 'mpg')
+    plot.plot_feature_vs_pred(X_test, y_test, y_pred, "horsepower", 'mpg')
 
 
 def run_seoul_bike_share():
@@ -65,7 +70,7 @@ def run_seoul_bike_share():
     input_size = X_train.shape[1]
     model = ThreeLayerNN(input_size)
     criterion = nn.MSELoss()
-    optimizer = optim.Adam(model.parameters(), lr=0.1)
+    optimizer = optim.Adam(model.parameters(), lr=0.001)
 
     X_train_tensor = torch.FloatTensor(X_train.values)
     y_train_tensor = torch.FloatTensor(y_train.values).view(-1, 1)
@@ -73,6 +78,7 @@ def run_seoul_bike_share():
     y_test_tensor = torch.FloatTensor(y_test.values).view(-1, 1)
 
     num_epochs = 10000
+    losses = []
     for epoch in range(num_epochs):
         model.train()
         optimizer.zero_grad()  # Zero the gradients
@@ -80,7 +86,7 @@ def run_seoul_bike_share():
         loss = criterion(outputs, y_train_tensor)  # Compute loss
         loss.backward()  # Backward pass
         optimizer.step()  # Update weights
-
+        losses.append(loss.item())
         if (epoch + 1) % 1000 == 0:  # Print every 10 epochs
             print(f'Epoch [{epoch + 1}/{num_epochs}], Loss: {loss.item():.4f}')
 
@@ -93,6 +99,12 @@ def run_seoul_bike_share():
 
     print(f'Test Loss: {test_loss.item()}')
     print(f'R2 Score: {r2_score}')
+
+    plot.plot_loss_vs_epoch(num_epochs, losses)
+    plot.plot_feature_vs_pred(X_test, y_test, y_pred, "Rainfall(mm)", 'Rented Bike Count')
+    plot.plot_feature_vs_pred(X_test, y_test, y_pred, "Wind speed (m/s)", 'Rented Bike Count')
+
+
 
 def run_boston():
     data = boston.get_dataset()
@@ -116,6 +128,7 @@ def run_boston():
     y_test_tensor = torch.FloatTensor(y_test.values).view(-1, 1)
 
     num_epochs = 10000
+    losses = []
     for epoch in range(num_epochs):
         model.train()
         optimizer.zero_grad()  # Zero the gradients
@@ -123,7 +136,7 @@ def run_boston():
         loss = criterion(outputs, y_train_tensor)  # Compute loss
         loss.backward()  # Backward pass
         optimizer.step()  # Update weights
-
+        losses.append(loss.item())
         if (epoch + 1) % 1000 == 0:  # Print every 10 epochs
             print(f'Epoch [{epoch + 1}/{num_epochs}], Loss: {loss.item():.4f}')
 
@@ -137,8 +150,13 @@ def run_boston():
     print(f'Test Loss: {test_loss.item()}')
     print(f'R2 Score: {r2_score}')
 
+    plot.plot_loss_vs_epoch(num_epochs, losses)
+    plot.plot_feature_vs_pred(X_test, y_test, y_pred, "RM", 'MEDV')
 
 if __name__ == "__main__":
     # run_auto_mpg()
     # run_seoul_bike_share()
     run_boston()
+
+
+

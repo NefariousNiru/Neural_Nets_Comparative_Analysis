@@ -182,5 +182,5 @@ def run_boston_cross_validation():
 
 if __name__ == "__main__":
     # run_auto_mpg_cross_val()
-    # run_seoul_bike_share_cross_val()
-    run_boston_cross_validation()
+    run_seoul_bike_share_cross_val()
+    # run_boston_cross_validation()

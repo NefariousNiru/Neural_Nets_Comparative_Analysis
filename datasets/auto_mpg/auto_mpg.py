@@ -1,4 +1,8 @@
 import os.path
+
+import pandas as pd
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+
 from util import pre_processing, load
 
 '''
